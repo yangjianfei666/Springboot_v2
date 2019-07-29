@@ -1,13 +1,5 @@
 package com.fc.test.service;
 
-import java.io.ByteArrayOutputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipOutputStream;
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.fc.test.mapper.auto.GeneratorMapper;
 import com.fc.test.model.custom.GenVo;
 import com.fc.test.model.custom.Tablepar;
@@ -15,6 +7,14 @@ import com.fc.test.model.custom.TsysTables;
 import com.fc.test.util.GenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipOutputStream;
 
 
 /**
@@ -26,13 +26,11 @@ import com.github.pagehelper.PageInfo;
 * @version V1.0   
  */
 @Service
+@RequiredArgsConstructor
 public class GeneratorService {
-	@Autowired
-	private GeneratorMapper generatorMapper;
+	private final GeneratorMapper generatorMapper;
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
 	 * @return
 	 */
 	 public PageInfo<TsysTables> list(Tablepar tablepar,String searchTxt){
@@ -47,7 +45,6 @@ public class GeneratorService {
 	 
 	 /**
 	  * 代码
-	  * @param tableName
 	  * @return
 	  */
 	public byte[] generatorCode(String[] tableNames,GenVo genVo){

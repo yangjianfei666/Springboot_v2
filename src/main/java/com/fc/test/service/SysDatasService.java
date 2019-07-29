@@ -1,12 +1,5 @@
 package com.fc.test.service;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fc.test.common.base.BaseService;
 import com.fc.test.common.conf.V2Config;
 import com.fc.test.common.file.FileUploadUtils;
@@ -18,18 +11,22 @@ import com.fc.test.model.custom.Tablepar;
 import com.fc.test.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SysDatasService implements BaseService<TsysDatas, TsysDatasExample>{
-	
-	
-	@Autowired
-	private TsysDatasMapper tsysDatasMapper;
+
+
+	private final TsysDatasMapper tsysDatasMapper;
 	
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
 	 * @return
 	 */
 	 public PageInfo<TsysDatas> list(Tablepar tablepar,String searchTxt){
@@ -60,8 +57,6 @@ public class SysDatasService implements BaseService<TsysDatas, TsysDatasExample>
 	
 	/**
 	 * 文件上传文件存储到文件表
-	 * @param record
-	 * @param fileURL
 	 * @return 主键
 	 * @throws IOException 
 	 */

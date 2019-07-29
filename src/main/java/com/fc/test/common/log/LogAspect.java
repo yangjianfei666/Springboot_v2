@@ -1,8 +1,12 @@
 package com.fc.test.common.log;
 
-import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.Map;
+import com.fc.test.model.auto.TsysOperLog;
+import com.fc.test.model.auto.TsysUser;
+import com.fc.test.service.SysOperLogServiceImpl;
+import com.fc.test.shiro.util.ShiroUtils;
+import com.fc.test.util.ServletUtils;
+import com.fc.test.util.StringUtils;
+import com.google.gson.Gson;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -16,13 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
-import com.fc.test.model.auto.TsysOperLog;
-import com.fc.test.model.auto.TsysUser;
-import com.fc.test.service.SysOperLogService;
-import com.fc.test.shiro.util.ShiroUtils;
-import com.fc.test.util.ServletUtils;
-import com.fc.test.util.StringUtils;
-import com.google.gson.Gson;
+
+import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 操作日志记录处理
@@ -37,7 +38,7 @@ public class LogAspect
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
     @Autowired
-    private SysOperLogService operLogService;
+    private SysOperLogServiceImpl operLogService;
 
     // 配置织入点
     @Pointcut("@annotation(com.fc.test.common.log.Log)")
@@ -133,8 +134,7 @@ public class LogAspect
 
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
-     * 
-     * @param joinPoint 切点
+     *
      * @return 方法描述
      * @throws Exception
      */
@@ -156,9 +156,7 @@ public class LogAspect
 
     /**
      * 获取请求的参数，放到log中
-     * 
-     * @param operLog
-     * @param request
+     *
      */
     private void setRequestValue(TsysOperLog operLog)
     {

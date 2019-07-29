@@ -1,10 +1,5 @@
 package com.fc.test.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import cn.hutool.core.util.RandomUtil;
 import com.fc.test.common.base.BaseService;
 import com.fc.test.common.support.Convert;
@@ -19,24 +14,31 @@ import com.fc.test.model.custom.Tablepar;
 import com.fc.test.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SysRoleService implements BaseService<TsysRole, TsysRoleExample> {
-	//角色mapper
-	@Autowired
-	private TsysRoleMapper tsysRoleMapper;
-	//自定义角色dao
-	@Autowired
-	private RoleDao roleDao;
-	//自动生成的权限角色映射mapper
-	@Autowired
-	private TsysPermissionRoleMapper tsysPermissionRoleMapper;
+	/**
+	 * 角色mapper
+	 */
+	private final TsysRoleMapper tsysRoleMapper;
+	/**
+	 * 自定义角色dao
+	 */
+	private final RoleDao roleDao;
+	/**
+	 * 自动生成的权限角色映射mapper
+	 */
+	private final TsysPermissionRoleMapper tsysPermissionRoleMapper;
 	
 	
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
 	 * @return
 	 */
 	 public PageInfo<TsysRole> list(Tablepar tablepar,String searchTxt){
@@ -61,12 +63,12 @@ public class SysRoleService implements BaseService<TsysRole, TsysRoleExample> {
 		 return tsysRoleMapper.selectByExample(tsysRoleExample);
 	 }
 
-	
-	 /**
-	  * 
-	  */	
+
+	/**
+	 *
+	 */
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public int deleteByPrimaryKey(String ids) {
 		List<String> lista=Convert.toListStrArray(ids);
 		//先删除角色下面的所有权限
@@ -94,7 +96,7 @@ public class SysRoleService implements BaseService<TsysRole, TsysRoleExample> {
 	 * @param prem 权限id集合
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public int insertRoleAndPrem(TsysRole record,String prem) {
 		//添加雪花主键id
 		String roleid=SnowflakeIdWorker.getUUID();
@@ -125,7 +127,7 @@ public class SysRoleService implements BaseService<TsysRole, TsysRoleExample> {
 	 * @param record
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public int updateRoleAndPrem(TsysRole record,String prem) {
 		//先删除角色下面的所有权限
 		TsysPermissionRoleExample permissionRoleExample=new TsysPermissionRoleExample();
@@ -178,7 +180,6 @@ public class SysRoleService implements BaseService<TsysRole, TsysRoleExample> {
 	
 	/**
 	 * 检查角色name
-	 * @param tsysUser
 	 * @return
 	 */
 	public int checkNameUnique(TsysRole tsysRole){

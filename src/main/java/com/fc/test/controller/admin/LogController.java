@@ -1,15 +1,6 @@
 package com.fc.test.controller.admin;
 
 
-import io.swagger.annotations.Api;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.fc.test.common.base.BaseController;
 import com.fc.test.common.domain.AjaxResult;
 import com.fc.test.model.auto.TsysOperLog;
@@ -17,6 +8,14 @@ import com.fc.test.model.custom.TableSplitResult;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.model.custom.TitleVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 日志记录controller
@@ -28,8 +27,10 @@ import com.github.pagehelper.PageInfo;
 @RequestMapping("LogController")
 public class LogController extends BaseController{
 
-	//跳转页面参数
-	private String prefix = "admin/log";
+	/**
+	 * 跳转页面参数
+	 */
+	private static final String PREFIX = "admin/log";
 	
 	@GetMapping("view")
 	@RequiresPermissions("system:log:view")
@@ -37,15 +38,13 @@ public class LogController extends BaseController{
     {	
 		String str="操作日志";
 		setTitle(model, new TitleVo("列表", str+"管理", true,"欢迎进入"+str+"页面", true, false));
-		
-        return prefix + "/list";
+
+		return PREFIX + "/list";
     }
 	
 	/**
 	 * 文件列表
-	 * @param tablepar
 	 * @param searchTxt 搜索字符
-	 * @return
 	 */
 	@PostMapping("list")
 	@RequiresPermissions("system:log:list")
@@ -59,8 +58,6 @@ public class LogController extends BaseController{
 	
 	/**
 	 * 删除日志
-	 * @param ids
-	 * @return
 	 */
 	@PostMapping("remove")
 	@RequiresPermissions("system:log:remove")

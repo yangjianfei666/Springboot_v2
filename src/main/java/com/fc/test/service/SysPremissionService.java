@@ -1,11 +1,5 @@
 package com.fc.test.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.fc.test.common.base.BaseService;
 import com.fc.test.common.support.Convert;
 import com.fc.test.mapper.auto.TsysPermissionRoleMapper;
@@ -21,25 +15,34 @@ import com.fc.test.util.SnowflakeIdWorker;
 import com.fc.test.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class SysPremissionService implements BaseService<TsysPremission, TsysPremissionExample>{
-	
-	//权限mapper
-	@Autowired
-	private TsysPremissionMapper tsysPremissionMapper;
-	
-	//权限自定义dao
-	@Autowired
-	private PermissionDao permissionDao;
-	//权限角色关联表
-	@Autowired
-	private TsysPermissionRoleMapper permissionRoleMapper;
+
+	/**
+	 * 权限mapper
+	 */
+	private final TsysPremissionMapper tsysPremissionMapper;
+
+	/**
+	 * 权限自定义dao
+	 */
+	private final PermissionDao permissionDao;
+	/**
+	 * 权限角色关联表
+	 */
+	private final TsysPermissionRoleMapper permissionRoleMapper;
 	
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
 	 * @return
 	 */
 	 public PageInfo<TsysPremission> list(Tablepar tablepar,String searchTxt){
@@ -76,7 +79,8 @@ public class SysPremissionService implements BaseService<TsysPremission, TsysPre
 		TsysPermissionRoleExample permissionRoleExample=new TsysPermissionRoleExample();
 		permissionRoleExample.createCriteria().andPermissionIdIn(lista);
 		List<TsysPermissionRole> tsysPermissionRoles=permissionRoleMapper.selectByExample(permissionRoleExample);
-		if(tsysPermissionRoles.size()>0) {//有角色外键
+		//有角色外键
+		if (tsysPermissionRoles.size()>0) {
 			return -2;
 		}
 		
@@ -86,15 +90,18 @@ public class SysPremissionService implements BaseService<TsysPremission, TsysPre
 		List<TsysPremission> tsysPremissions= tsysPremissionMapper.selectByExample(example);
 		boolean lag=false;
 		for (TsysPremission tsysPremission : tsysPremissions) {
-			if(tsysPremission.getChildCount()>0) {
-				lag=true;
+			if (tsysPremission.getChildCount() > 0) {
+				lag = true;
 			}
 		}
-		if(lag) {//有子集 无法删除
+		if (lag) {
+			//有子集 无法删除
 			return -1;
-		}else {//删除操作
+		}else {
+			//删除操作
 			int i=tsysPremissionMapper.deleteByExample(example);
-			if(i>0) {//删除成功
+			if(i>0) {
+				//删除成功
 				return 1;
 			}else {//删除失败
 				return 0;
@@ -186,7 +193,6 @@ public class SysPremissionService implements BaseService<TsysPremission, TsysPre
 	
 	/**
 	 * 检查权限名字
-	 * @param tsysUser
 	 * @return
 	 */
 	public int checkNameUnique(TsysPremission tsysPremission){
@@ -198,7 +204,6 @@ public class SysPremissionService implements BaseService<TsysPremission, TsysPre
 
 	/**
 	 * 检查权限URL
-	 * @param tsysUser
 	 * @return
 	 */
 	public int checkURLUnique(TsysPremission tsysPremission){
@@ -210,7 +215,6 @@ public class SysPremissionService implements BaseService<TsysPremission, TsysPre
 
 	/**
 	 * 检查权限perms字段
-	 * @param tsysUser
 	 * @return
 	 */
 	public int checkPermsUnique(TsysPremission tsysPremission){
@@ -336,7 +340,8 @@ public class SysPremissionService implements BaseService<TsysPremission, TsysPre
 			List<BootstrapTree> bootstrapTreeList = pboostrapTree.getNodes();
 			if(null!=bootstrapTreeList&&!bootstrapTreeList.isEmpty()) {
 				for(BootstrapTree bootstrapTree : bootstrapTreeList) {
-					if (ifpermissions(myTsysPremissions, bootstrapTree)) {// 菜单栏设置
+					if (ifpermissions(myTsysPremissions, bootstrapTree)) {
+						// 菜单栏设置
 						bootstrapTree.setState(map);
 					}
 					//检查子节点

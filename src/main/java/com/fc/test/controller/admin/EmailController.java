@@ -1,27 +1,21 @@
 package com.fc.test.controller.admin;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.fc.test.common.base.BaseController;
 import com.fc.test.common.domain.AjaxResult;
 import com.fc.test.model.auto.TSysEmail;
 import com.fc.test.model.custom.TableSplitResult;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.model.custom.TitleVo;
-import com.fc.test.service.TSysEmailService;
+import com.fc.test.service.TsysEmailServiceImpl;
 import com.fc.test.util.SimpleEmailUtil;
 import com.github.pagehelper.PageInfo;
-
 import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 邮件发送Controller
@@ -33,12 +27,12 @@ import io.swagger.annotations.Api;
 @Controller
 @Api(value = "邮件发送Controller")
 @RequestMapping("EmailController")
+@RequiredArgsConstructor
 public class EmailController extends BaseController{
 		
 	private String prefix = "admin/email";
-	
-	@Autowired
-	private TSysEmailService tSysEmailService;
+
+	private final TsysEmailServiceImpl tSysEmailService;
 	
 	
 	@GetMapping("view")
@@ -104,7 +98,6 @@ public class EmailController extends BaseController{
 	
 	/**
 	 * 检查用户
-	 * @param tsysUser
 	 * @return
 	 */
 	@PostMapping("checkNameUnique")

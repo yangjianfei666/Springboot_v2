@@ -1,12 +1,6 @@
 package com.fc.test.service;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ClassUtils;
+import cn.hutool.core.io.FileUtil;
 import com.fc.test.common.base.BaseService;
 import com.fc.test.common.conf.V2Config;
 import com.fc.test.common.support.Convert;
@@ -14,41 +8,44 @@ import com.fc.test.mapper.auto.TsysDatasMapper;
 import com.fc.test.mapper.auto.TsysFileDataMapper;
 import com.fc.test.mapper.auto.TsysFileMapper;
 import com.fc.test.mapper.custom.TsysDatasDao;
-import com.fc.test.model.auto.TsysDatas;
-import com.fc.test.model.auto.TsysDatasExample;
-import com.fc.test.model.auto.TsysFile;
-import com.fc.test.model.auto.TsysFileData;
-import com.fc.test.model.auto.TsysFileDataExample;
-import com.fc.test.model.auto.TsysFileExample;
+import com.fc.test.model.auto.*;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.shiro.util.ShiroUtils;
 import com.fc.test.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ClassUtils;
 
-import cn.hutool.core.io.FileUtil;
+import java.util.Date;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
-	
-	//文件信息mapper
-	@Autowired
-	private TsysFileMapper tsysFileMapper;
-	//文件存储关联mapper
-	@Autowired
-	private TsysFileDataMapper tsysFileDataMapper;
-	//自定义文件dao
-	@Autowired
-	private TsysDatasDao tsysDatasDao;
-	//文件存储mapper
-	@Autowired
-	private TsysDatasMapper tsysDatasMapper;
+
+	/**
+	 * 文件信息mapper
+	 */
+	private final TsysFileMapper tsysFileMapper;
+	/**
+	 * 文件存储关联mapper
+	 */
+	private final TsysFileDataMapper tsysFileDataMapper;
+	/**
+	 * 自定义文件dao
+	 */
+	private final TsysDatasDao tsysDatasDao;
+	/**
+	 * 文件存储mapper
+	 */
+	private final TsysDatasMapper tsysDatasMapper;
 	
 	
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
 	 * @return
 	 */
 	 public PageInfo<TsysFile> list(Tablepar tablepar,String searchTxt){
@@ -68,7 +65,8 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 	 * 删除文件信息全部
 	 * @param ids 文件集合 1,2,3
 	 */
-	@Transactional
+	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public int deleteByPrimaryKey(String ids) {
 		List<String> lista=Convert.toListStrArray(ids);
 		//删除本地文件
@@ -123,13 +121,12 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 		}else {
 			FileUtil.del(filePath);
 		}
-		
-		
+
+
 	}
 
-	
-	
-	@Transactional
+
+	@Transactional(rollbackFor = Exception.class)
 	public int insertSelective(TsysFile record,String dataId) {
 		//插入创建人id
 		record.setCreateUserId(ShiroUtils.getUserId());
@@ -165,7 +162,7 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 	 * @param record
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public int updateByPrimaryKey(TsysFile record,String dataId) {
 		//获取旧数据
 		TsysFile old_data=tsysFileMapper.selectByPrimaryKey(record.getId());
@@ -231,7 +228,6 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 	
 	/**
 	 * 检查文件名字
-	 * @param TsysFile
 	 * @return
 	 */
 	public int checkNameUnique(TsysFile tsysFile){

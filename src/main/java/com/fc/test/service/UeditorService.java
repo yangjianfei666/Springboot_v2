@@ -1,11 +1,5 @@
 package com.fc.test.service;
 
-import java.io.IOException;
-import java.util.Date;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import com.fc.test.common.conf.V2Config;
 import com.fc.test.common.file.FileUploadUtils;
 import com.fc.test.mapper.auto.TsysDatasMapper;
@@ -16,6 +10,13 @@ import com.fc.test.model.auto.TsysFile;
 import com.fc.test.model.auto.TsysFileData;
 import com.fc.test.shiro.util.ShiroUtils;
 import com.fc.test.util.SnowflakeIdWorker;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * 百度文件上传service
@@ -25,22 +26,23 @@ import com.fc.test.util.SnowflakeIdWorker;
  *
  */
 @Service
+@RequiredArgsConstructor
 public class UeditorService {
-	@Autowired
-	private TsysFileDataMapper tsysFileDataMapper;
-	
-	//文件存储mapper
-	@Autowired
-	private TsysDatasMapper tsysDatasMapper;
-	//文件信息mapper
-	@Autowired
-	private TsysFileMapper tsysFileMapper;
+
+	private final TsysFileDataMapper tsysFileDataMapper;
+
+	/**
+	 * 文件存储mapper
+	 */
+	private final TsysDatasMapper tsysDatasMapper;
+	/**
+	 * 文件信息mapper
+	 */
+	private final TsysFileMapper tsysFileMapper;
 
     
     /**
 	 * 文件上传文件存储到文件表
-	 * @param record
-	 * @param fileURL
 	 * @return TsysDatas
 	 * @throws IOException 
 	 */
@@ -66,12 +68,12 @@ public class UeditorService {
 		}
 		return null;
 	}
-    
-    
-    /**
-     * 添加文件信息
-     */
-    @Transactional
+
+
+	/**
+	 * 添加文件信息
+	 */
+	@Transactional(rollbackFor = Exception.class)
 	public TsysFileData fileInfoByininsert(String dataId) {
     	TsysFile record=new TsysFile();
     	record.setFileName("百度富文本上传");

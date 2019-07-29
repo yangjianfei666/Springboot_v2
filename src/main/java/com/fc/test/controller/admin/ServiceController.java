@@ -1,16 +1,14 @@
 package com.fc.test.controller.admin;
 
+import com.fc.test.common.base.BaseController;
+import com.fc.test.model.custom.Service;
+import com.fc.test.model.custom.TitleVo;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.fc.test.common.base.BaseController;
-import com.fc.test.model.custom.Service;
-import com.fc.test.model.custom.TitleVo;
-
-import io.swagger.annotations.Api;
 
 /**
  * 服务器信息Controller
@@ -24,8 +22,10 @@ import io.swagger.annotations.Api;
 @RequestMapping("ServiceController")
 public class ServiceController extends BaseController{
 
-	//跳转页面参数
-	private String prefix = "admin/service";
+	/**
+	 * 跳转页面参数
+	 */
+	private static final String PREFIX = "admin/service";
 	
 	@GetMapping("view")
 	@RequiresPermissions("system:service:view")
@@ -36,7 +36,7 @@ public class ServiceController extends BaseController{
 		setTitle(model, new TitleVo("列表", str+"管理", true,"欢迎进入"+str+"页面", true, false));
 		
 		model.addAttribute("service", new Service());
-		
-        return prefix + "/list";
+
+		return PREFIX + "/list";
     }
 }

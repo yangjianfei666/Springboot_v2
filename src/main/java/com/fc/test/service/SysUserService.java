@@ -1,24 +1,12 @@
 package com.fc.test.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.fc.test.common.base.BaseService;
 import com.fc.test.common.support.Convert;
 import com.fc.test.mapper.auto.TSysRoleUserMapper;
 import com.fc.test.mapper.auto.TsysRoleMapper;
 import com.fc.test.mapper.auto.TsysUserMapper;
 import com.fc.test.mapper.custom.RoleDao;
-import com.fc.test.model.auto.TSysRoleUser;
-import com.fc.test.model.auto.TSysRoleUserExample;
-import com.fc.test.model.auto.TsysRole;
-import com.fc.test.model.auto.TsysRoleExample;
-import com.fc.test.model.auto.TsysUser;
-import com.fc.test.model.auto.TsysUserExample;
+import com.fc.test.model.auto.*;
 import com.fc.test.model.custom.RoleVo;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.util.MD5Util;
@@ -26,6 +14,12 @@ import com.fc.test.util.SnowflakeIdWorker;
 import com.fc.test.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 系统用户
@@ -35,27 +29,30 @@ import com.github.pagehelper.PageInfo;
  *
  */
 @Service
+@RequiredArgsConstructor
 public class SysUserService implements BaseService<TsysUser, TsysUserExample>{
-	//生成的用户dao
-	@Autowired
-	private TsysUserMapper tsysUserMapper;
-	
-	//生成的角色用户dao
-	@Autowired
-	private TSysRoleUserMapper tSysRoleUserMapper;
-	
-	//自定义角色dao
-	@Autowired
-	private RoleDao roleDao;
-	
-	//自动生成的角色dao
-	@Autowired
-	private TsysRoleMapper tsysRoleMapper;
+	/**
+	 * 生成的用户dao
+	 */
+	private final TsysUserMapper tsysUserMapper;
+
+	/**
+	 * 生成的角色用户dao
+	 */
+	private final TSysRoleUserMapper tSysRoleUserMapper;
+
+	/**
+	 * 自定义角色dao
+	 */
+	private final RoleDao roleDao;
+
+	/**
+	 * 自动生成的角色dao
+	 */
+	private final TsysRoleMapper tsysRoleMapper;
 	
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
 	 * @return
 	 */
 	 public PageInfo<TsysUser> list(Tablepar tablepar,String username){
@@ -94,7 +91,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample>{
 	 * @param roles
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public int insertUserRoles(TsysUser record,List<String> roles) {
 		String userid=SnowflakeIdWorker.getUUID();
 		record.setId(userid);
@@ -224,7 +221,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample>{
 	 * @param roles
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public int updateUserRoles(TsysUser record,List<String> roles) {
 		//先删除这个用户的所有角色
 		TSysRoleUserExample tSysRoleUserExample=new TSysRoleUserExample();

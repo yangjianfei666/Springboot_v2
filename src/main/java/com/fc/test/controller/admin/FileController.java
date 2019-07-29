@@ -1,20 +1,5 @@
 package com.fc.test.controller.admin;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import io.swagger.annotations.Api;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import com.fc.test.common.base.BaseController;
 import com.fc.test.common.conf.V2Config;
 import com.fc.test.common.domain.AjaxResult;
@@ -25,6 +10,17 @@ import com.fc.test.model.custom.TableSplitResult;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.model.custom.TitleVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 文件上传controller
@@ -36,7 +32,11 @@ import com.github.pagehelper.PageInfo;
 @RequestMapping("FileController")
 public class FileController extends BaseController{
 
-	//跳转页面参数
+	public static final String Y = "Y";
+	public static final String N = "N";
+	/**
+	 * 跳转页面参数
+	 */
 	private String prefix = "admin/file";
 	
 	@GetMapping("view")
@@ -196,11 +196,12 @@ public class FileController extends BaseController{
      * 展示文件跳转页面
      */
     @GetMapping("/viewfile/{id}")
-    public String viewfile(@PathVariable("id") String id,ModelMap mmap){
-    	if("Y".equals(V2Config.getIsstatic())) {//为静态目录存放的时候
-    		mmap.put("is_static","Y");
+	public String viewfile(@PathVariable("id") String id, ModelMap mmap) {
+		if (Y.equals(V2Config.getIsstatic())) {
+			//为静态目录存放的时候
+			mmap.put("is_static",Y);
     	}else {//为自定义存放目录的时候
-    		mmap.put("is_static","N");
+			mmap.put("is_static", N);
     	}
     	mmap.put("tsysDatas",sysFileDatasService.queryfileID(id));
         return prefix + "/viewfile";

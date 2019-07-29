@@ -1,11 +1,5 @@
 package com.fc.test.service;
 
-import java.util.Date;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.fc.test.common.base.BaseService;
 import com.fc.test.common.support.Convert;
 import com.fc.test.mapper.auto.TSysEmailMapper;
@@ -14,6 +8,13 @@ import com.fc.test.model.auto.TSysEmailExample;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.shiro.util.ShiroUtils;
 import com.fc.test.util.SnowflakeIdWorker;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 电子邮件Service
@@ -24,14 +25,13 @@ import com.fc.test.util.SnowflakeIdWorker;
 * @date 2019-06-30 00:49:49  
  */
 @Service
-public class TSysEmailService implements BaseService<TSysEmail, TSysEmailExample>{
-	@Autowired
-	private TSysEmailMapper tSysEmailMapper;
+@RequiredArgsConstructor
+public class TsysEmailServiceImpl implements BaseService<TSysEmail, TSysEmailExample> {
+
+	private final TSysEmailMapper tSysEmailMapper;
 	
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
 	 * @return
 	 */
 	 public PageInfo<TSysEmail> list(Tablepar tablepar,String name){
@@ -125,7 +125,6 @@ public class TSysEmailService implements BaseService<TSysEmail, TSysEmailExample
 	
 	/**
 	 * 检查name
-	 * @param TSysEmail
 	 * @return
 	 */
 	public int checkNameUnique(TSysEmail tSysEmail){

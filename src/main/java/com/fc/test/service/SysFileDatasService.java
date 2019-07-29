@@ -1,11 +1,5 @@
 package com.fc.test.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fc.test.common.base.BaseService;
 import com.fc.test.common.support.Convert;
 import com.fc.test.mapper.auto.TsysDatasMapper;
@@ -14,14 +8,18 @@ import com.fc.test.model.auto.TsysDatas;
 import com.fc.test.model.auto.TsysFileData;
 import com.fc.test.model.auto.TsysFileDataExample;
 import com.fc.test.util.SnowflakeIdWorker;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SysFileDatasService implements BaseService<TsysFileData, TsysFileDataExample>{
-	
-	@Autowired
-	private TsysFileDataMapper tsysFileDataMapper;
-	@Autowired
-	private TsysDatasMapper tsysDatasMapper;
+
+	private final TsysFileDataMapper tsysFileDataMapper;
+	private final TsysDatasMapper tsysDatasMapper;
 	
 	@Override
 	public int deleteByPrimaryKey(String ids) {

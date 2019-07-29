@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.40</version><!--$NO-MVN-MAN-VER$-->
+			<version>8.0.16</version>
 		</dependency> 
 
 		<!-- mysql驱动8.0
@@ -123,12 +123,22 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.3</version>
+		</dependency>
 
 		<!--io常用工具类 -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons.io.version}</version>
+		</dependency>
+		<!--引入Lombok依赖-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 		</dependency>
 
 		<!--文件上传工具类 -->
@@ -138,13 +148,19 @@
 			<version>${commons.fileupload.version}</version>
 		</dependency>
 
-
-		<!-- 热部署 -->
+		<!--auto configure-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
+			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
+
+
+		<!-- 热部署 -->
+		<!--<dependency>-->
+		<!--<groupId>org.springframework.boot</groupId>-->
+		<!--<artifactId>spring-boot-devtools</artifactId>-->
+		<!--<optional>true</optional>-->
+		<!--</dependency>-->
 
 		<!-- Hutool是一个Java工具包 http://hutool.cn/ -->
 		<dependency>

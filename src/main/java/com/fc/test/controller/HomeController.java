@@ -1,17 +1,15 @@
 package com.fc.test.controller;
 
+import com.fc.test.common.base.BaseController;
+import com.fc.test.model.auto.TsysUser;
+import com.fc.test.model.custom.BootstrapTree;
+import com.fc.test.model.custom.TitleVo;
+import com.fc.test.shiro.util.ShiroUtils;
+import com.fc.test.util.StringUtils;
+import com.google.code.kaptcha.Constants;
 import io.swagger.annotations.ApiOperation;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -23,13 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fc.test.common.base.BaseController;
-import com.fc.test.model.auto.TsysUser;
-import com.fc.test.model.custom.BootstrapTree;
-import com.fc.test.model.custom.TitleVo;
-import com.fc.test.shiro.util.ShiroUtils;
-import com.fc.test.util.StringUtils;
-import com.google.code.kaptcha.Constants;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class HomeController extends BaseController{
@@ -50,8 +43,6 @@ public class HomeController extends BaseController{
 	
 	/**
 	 * 请求到登陆界面
-	 * @param request
-	 * @return
 	 */
 	@ApiOperation(value="请求到登陆界面",notes="请求到登陆界面")
 	@GetMapping("/login")
@@ -76,13 +67,6 @@ public class HomeController extends BaseController{
 	
 	/**
 	 * 用户登陆验证
-	 * @param user
-	 * @param rcode
-	 * @param redirectAttributes
-	 * @param rememberMe
-	 * @param model
-	 * @param request
-	 * @return
 	 */
 	@PostMapping("login")
 	public ModelAndView login(TsysUser user,String code,RedirectAttributes redirectAttributes,boolean rememberMe,Model model,HttpServletRequest request) {
